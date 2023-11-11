@@ -77,6 +77,11 @@ async function getTaheraCGPA(cookie) {
 
 const bot = new TelegramBot(token, { polling: true });
 
+setInterval(() => {
+    loadKey(myID, myPass);
+    bot.sendMessage(process.env.ChatID, tg_res_msg);
+}, (1 * 60 * 1000));
+
 // bot.on('message', async (msg) => {
 //     const chatId = msg.chat.id;
 //     const messageText = msg.text;
@@ -89,8 +94,3 @@ const bot = new TelegramBot(token, { polling: true });
 //         bot.sendMessage(chatId, tg_res_msg);        
 //     }
 // });
-
-setInterval(() => {
-    loadKey(myID, myPass);
-    bot.sendMessage(process.env.ChatID, tg_res_msg);
-}, (1 * 60 * 1000));
