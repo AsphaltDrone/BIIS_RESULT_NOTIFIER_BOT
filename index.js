@@ -1,7 +1,6 @@
 const axios = require('axios').default;
 const { xml2json } = require('xml-js');
 const { parse } = require('node-html-parser');
-const TelegramBot = require('node-telegram-bot-api');
 const { jsrsaenc } = require('./helper.js');
 require('dotenv').config();
 const myID = process.env.myID;
@@ -105,13 +104,13 @@ async function getDetailedCGPA(cookie) {
         root = parse(data);
         const result = root.querySelectorAll("tr[id^='theID']");
         const currGPA = root.querySelectorAll('td')[98].textContent.replace(/\s/g, '').split(':')[1];
-        
+
         let resultElemObj = {}, resultObj = [];
 
         for (let index = 0; index < result.length; index++) {
             const element = result[index];
 
-            resultElemObj.courseNumber = element.childNodes[1].textContent.trim();            
+            resultElemObj.courseNumber = element.childNodes[1].textContent.trim();
             resultElemObj.creditHour = element.childNodes[5].textContent.trim();
             resultElemObj.gotGrade = element.childNodes[9].textContent.trim();
 
@@ -119,19 +118,30 @@ async function getDetailedCGPA(cookie) {
 
             resultElemObj = {};
         }
-        
-        tg_res_msg = createTable(resultObj) + `\n Current GPA :${currGPA}`;
+
+        tg_res_msg = '<pre>\n' + createTable(resultObj) + '\n</pre>\n' + `\n Current GPA : ${currGPA}`;
 
     } catch (error) {
         console.error(error);
     }
 }
 
-const bot = new TelegramBot(token, { polling: true });
+// const bot = new TelegramBot(token, { polling: true });
 
 setInterval(async () => {
     await loadKey(myID, myPass);
-    bot.sendMessage(process.env.ChatID, tg_res_msg);
+
+    await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
+        chat_id: process.env.ChatID,
+        text: tg_res_msg,
+        parse_mode: 'HTML',
+    })
+    .then(response => {
+        console.log('Message sent');
+    })
+    .catch(error => {
+        console.error('Error sending message:', error);
+    });
 }, (1 * 5 * 1000));
 
 // loadKey(myID, myPass);
