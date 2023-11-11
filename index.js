@@ -9,16 +9,18 @@ const myPass = process.env.myPass;
 const token = process.env.TG_Token;
 
 var tg_res_msg = 'empty';
+var cookie = '';
 
 async function loadKey(username, pass) {
     try {
         tg_res_msg = 'empty';
+        cookie = '';
         const { data, headers } = await axios.get('https://biis.buet.ac.bd/BIIS_WEB/keyGeneration.do');
         const res = JSON.parse(xml2json(data, { compact: true, spaces: 2 }));
         const key = res['xml']['key']['_text'];
         const modulus = res['xml']['modulus']['_text'];
         const keylen = res['xml']['keylen']['_text'];
-        const cookie = headers['set-cookie'][0].split(';')[0];
+        cookie = headers['set-cookie'][0].split(';')[0];
         pass = jsrsaenc(key, modulus, keylen, pass);
 
         await loginAction(username, pass, cookie);
@@ -45,7 +47,8 @@ async function loginAction(username, pass, cookie) {
         let isGoodLogin = JSON.stringify(data).includes('Logout');
 
         if (isGoodLogin) {
-            await getTaheraCGPA(cookie);
+            // await getTaheraCGPA(cookie);
+            await getDetailedCGPA(cookie);
         }
         else {
             console.log("Bad Login")
@@ -75,12 +78,98 @@ async function getTaheraCGPA(cookie) {
     }
 }
 
+async function getDetailedCGPA(cookie) {
+    try {
+        const res1 = await axios.get('https://biis.buet.ac.bd/BIIS_WEB/ListSemesters.do',
+            {
+                headers: {
+                    'cookie': cookie
+                }
+            });
+
+        let root = parse(res1.data);
+        const selectedSemester = root.querySelectorAll('option')[1].rawAttributes.value;
+
+        const { data } = await axios.post('https://biis.buet.ac.bd/BIIS_WEB/ProcessPGS.do',
+            {
+                selectedSemester: selectedSemester,
+                B1: 'Show'
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'cookie': cookie
+                }
+            });
+
+        root = parse(data);
+        const result = root.querySelectorAll("tr[id^='theID']");
+
+        let resultElemObj = {}, resultObj = [];
+
+        for (let index = 0; index < result.length; index++) {
+            const element = result[index];
+
+            resultElemObj.courseNumber = element.childNodes[1].textContent.trim();            
+            resultElemObj.creditHour = element.childNodes[5].textContent.trim();
+            resultElemObj.gotGrade = element.childNodes[9].textContent.trim();
+
+            resultObj.push(resultElemObj);
+
+            resultElemObj = {};
+        }
+        
+        tg_res_msg = createTable(resultObj);
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 const bot = new TelegramBot(token, { polling: true });
 
-setInterval(() => {
-    loadKey(myID, myPass);
+setInterval(async () => {
+    await loadKey(myID, myPass);
     bot.sendMessage(process.env.ChatID, tg_res_msg);
-}, (1 * 60 * 1000));
+}, (1 * 10 * 1000));
+
+
+
+
+
+// Thanks ChatGPT
+function createTable(data) {
+    if (!Array.isArray(data) || data.length === 0) {
+        return "No data to display.";
+    }
+
+    // Get the headers from the first object in the array
+    const headers = Object.keys(data[0]);
+
+    // Calculate the maximum width for each column
+    const columnWidths = headers.reduce((acc, header) => {
+        acc[header] = Math.max(...data.map(row => String(row[header]).length), header.length);
+        return acc;
+    }, {});
+
+    // Create the header row
+    const headerRow = headers.map(header => `${header.padEnd(columnWidths[header])}`).join(' | ');
+
+    // Create the separator row
+    const separatorRow = headers.map(header => '-'.repeat(columnWidths[header])).join('-+-');
+
+    // Create the data rows
+    const dataRows = data.map(row =>
+        headers.map(header => `${String(row[header]).padEnd(columnWidths[header])}`).join(' | ')
+    );
+
+    // Combine all rows into the final table string
+    const tableString = `${headerRow}\n${separatorRow}\n${dataRows.join('\n')}`;
+
+    return tableString;
+}
+
+
 
 // bot.on('message', async (msg) => {
 //     const chatId = msg.chat.id;

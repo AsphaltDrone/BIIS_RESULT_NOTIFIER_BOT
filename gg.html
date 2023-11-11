@@ -1,0 +1,1571 @@
+<!DOCTYPE html?>
+
+
+
+
+
+
+
+
+ 
+<head>
+<title>BIIS</title>
+
+
+
+<meta http-equiv="pragma" content="no-cache"/>
+<meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="expires" content="0"/>
+<script type="text/javascript" src="/BIIS_WEB/resource/javascript/jquery/jquery-1.2.6.js"></script>	
+
+
+<noscript>
+  <meta http-equiv="Refresh" content="0;URL=nojavascript.jsp"/>
+</noscript>   
+   
+<!--[if IE]>
+<STYLE type=text/css media=screen>BODY {
+	BEHAVIOR: url(csshover.htc)
+}
+#menu UL A {
+	width: 100%;
+}
+
+#menu li{
+	padding-right: 10px;
+	}
+#menu UL UL LI {
+	FLOAT: left; WIDTH: 100%; HEIGHT: 1%
+}
+#menu UL UL LI A {
+	HEIGHT: 1%
+}
+</STYLE>
+<![endif]-->
+    
+<link href="/BIIS_WEB/resource/style/style.css" rel="stylesheet" type="text/css" /> 
+<script type="text/javascript">
+	function hidestatus(){
+	window.status='';
+	return true;
+	}
+
+	if (document.layers)
+		document.captureEvents(Event.MOUSEOVER | Event.MOUSEOUT)
+		
+		document.onmouseover=hidestatus
+		document.onmouseout=hidestatus
+	
+	
+	function showHideChild(i,vis){
+	  	
+	   var ul = document.getElementById("ulsubmenu_"+i);
+		if(ul!=null)
+	   		ul.style.display=vis;
+	}
+
+
+ function hoverParent(pr,parent){
+	    var a = document.getElementById(pr);
+    	a.style.backgroundColor = "#ddd";
+		a.style.color = "maroon";
+
+   var ul = document.getElementById("ulsubmenu_"+parent);
+		ul.style.display="block";
+    }
+    
+    function removeParentHover(pr,parent){
+	    var a = document.getElementById(pr);
+    	a.style.backgroundColor = "";
+		a.style.color = "";
+    }
+
+function displayMenu(cid){
+var count = $(".ulsub").size();
+if(count>2){
+var tcid = "ul_"+cid;
+	$(".ulsub").each(function(index){
+		count++;
+
+		//ul_Common means common taks such as change password, change secret question, view academic council resulation
+		if(this.id!="ul_Common" && this.id!=tcid){
+			var sid = this.id.split("_")[1];
+			var html = $("#h_"+sid).val();
+			$("#a_"+sid).html("[+] "+html);			
+			$(this).hide();
+       }
+	});
+    
+	$("#ul_"+cid).toggle();
+	var html = $("#h_"+cid).val();
+	var dis = $("#ul_"+cid).css("display");
+	if(dis=='block')
+		$("#a_"+cid).html("[-] "+html);
+	else
+		$("#a_"+cid).html("[+] "+html);	
+	setCookie('maingroup',cid,5);
+  }
+}
+
+function setMenu(cid){
+var count = $(".ulsub").size();
+var tcid = "ul_"+cid;
+	$(".ulsub").each(function(index){
+
+		if(this.id!="ul_Common" && this.id!=tcid){
+			var sid = this.id.split("_")[1];
+			var html = $("#h_"+sid).val();
+			$("#a_"+sid).html("[+] "+html);			
+			$(this).hide();
+       }
+	});
+
+	if(count>2){
+		$("#ul_"+cid).show();
+		var dis = $("#ul_"+cid).css("display");
+		var html = $("#h_"+cid).val();
+		if(dis=='block')
+			$("#a_"+cid).html("[-] "+html);
+		else
+			$("#a_"+cid).html("[+] "+html);
+    }	
+
+}
+
+
+function setCookie(c_name,value,expiredays)
+{
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate()+expiredays);
+	document.cookie=c_name+ "=" +escape(value)+
+		((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+}
+
+function getCookie(c_name)
+{
+if (document.cookie.length>0)
+  {
+  c_start=document.cookie.indexOf(c_name + "=");
+  if (c_start!=-1)
+    {
+    c_start=c_start + c_name.length+1;
+    c_end=document.cookie.indexOf(";",c_start);
+    if (c_end==-1) c_end=document.cookie.length;
+    return unescape(document.cookie.substring(c_start,c_end));
+    }
+  }
+return "";
+}
+</script>
+
+<!-- BUET Website Development Information -->
+<!--
+	* BUET website        0.1 2007/03/31
+	*
+	* Copyright (c) 2007 BUET.
+	* All rights reserved.
+-->
+
+<!--
+	* @version 	0.1 2007 March 31
+ 	* @author 	BIIS Team
+-->
+
+
+<script language="javascript" type="text/javascript"
+	src="/BIIS_WEB/resource/javascript/utils/round.js"></script>
+<br />
+<style>
+/* curve height, background image */
+.myClassName .t,.myClassName .b,.myClassName .b b,.myClassName .t b {
+	height: 2px;
+	background-image: url(/BIIS_WEB/resource/images/round.png);
+}
+
+/* inner color, border color, border width */
+.myClassName .c {
+	background: url(/BIIS_WEB/resource/images/gradient25.jpg) repeat-x
+		scroll 0 0;
+	border-color: #445566;
+	border-left-width: 1px;
+	border-right-width: 1px;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="/BIIS_WEB/resource/javascript/dojolib/dijit/themes/tundra/tundra.css">
+        <style type="text/css">
+            body, html { font-family:helvetica,arial,sans-serif; font-size:90%; }
+        </style> 
+</head>
+<body id="pg" onload="hidestatus()" class="tundra">
+	<table align="center" width="995">
+		<tr>
+			<td>
+				<table class="warp_top">
+					<tr>
+						<td class="warp_top_left">
+							&nbsp;
+						</td>
+						<td class="warp_top_bg">
+							&nbsp;
+						</td>
+						<td class="warp_top_right">
+							&nbsp;
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table class="warp">
+					<tr>
+						<td class="warp_left">
+							&nbsp;
+						</td>
+						<td class="warp_bg">
+							<table align="center" width="100%">
+								<tr>
+									<td>
+										<table class="header">
+											<tr>
+												<td class="header_left">
+													&nbsp;
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="top_menu">
+										<table>
+											<tr>
+												<td class="top_menu_left" style="text-align: left;">
+													<a href="javascript:showBuetSite()" style="padding-left: 0px;font-size: medium; font-family:'Times New Roman', Times, serif">BUET Home</a>
+													<a href="javascript:showMedicalSite()" style="padding-left: 5px;font-size: medium; font-family:'Times New Roman', Times, serif">Medical Center</a>
+													
+												</td>
+												<td>
+													
+													<table>
+														<tr>
+															<td class="space">
+																&nbsp;
+															</td>
+															<td class="space">
+																<a href="/BIIS_WEB/Home.do">Home</a>
+															</td>
+															<td class="space">
+																<a target="_blank" href="https://biis.buet.ac.bd">Secure BIIS</a>
+															</td>
+															<td class="space">
+																&nbsp;
+															</td>
+															<td class="space">
+																<a href="http://www.buet.ac.bd/?page_id=15">Campus&nbsp;Life</a>
+															</td>
+															<td class="space">
+																&nbsp;
+															</td>
+															<td class="space">
+																<a href="http://www.buet.ac.bd/?page_id=17">Notice&nbsp;Board</a>
+															</td>
+															<td class="space">
+																&nbsp;
+															</td>
+															<td class="space">
+																<a href="http://www.buet.ac.bd/?page_id=21">Phone&nbsp;Book</a>
+															</td>
+															<td class="space">
+																&nbsp;
+															</td>
+															<td class="space">
+																<a href="/BIIS_WEB/MyMail.do?hello">Feedback</a>
+															</td>
+															<td class="space">
+																&nbsp;
+															</td>
+															<td class="space">
+																<a href="#">FAQ</a>
+															</td>
+															<td class="space">
+																&nbsp;
+															</td>
+															<td class="space">
+																<a href="/BIIS_WEB/Logout.do">Logout</a>
+															</td>
+															<td class="space">
+																&nbsp;
+															</td>
+															<td class="space">
+																
+															</td>
+															<td>
+																&nbsp;
+															</td>
+														</tr>
+													</table>
+													
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+
+<script type="text/javascript">
+ function showBuetSite()
+ {
+  window.open("http://www.buet.ac.bd");
+ }
+ function showFileTracker()
+ {
+  window.open("http://file.biis.buet.ac.bd:8080/FileTracker/login");
+ }
+ function showMedicalSite()
+ {
+ 	window.open("http://medical.buet.ac.bd/web/");
+  //window.open("http://biis.buet.ac.bd:8082/MCENTER/index.action");
+ }
+ function showBuetWebMail()
+ {
+  window.open("https://login.microsoftonline.com");
+ }
+ function showCASRSite()
+ {
+  window.open("https://casrproposal.buet.ac.bd/login");
+ }
+ function showInternetService()
+ {
+  window.open("https://webmail.buet.ac.bd");
+ }
+ 
+</script>
+<tr>
+	<td>
+		<table >
+			<tr>
+				<td class="sidebar">
+					<table>
+						<tr>
+							<td id="menu">
+								
+									
+									
+								
+								
+								
+									
+										
+										
+										
+										
+										
+										<ul id="ul_Common" class="ulsub" style="padding-left: 0px;display:block">
+										 
+										
+										
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_0"
+														onmouseout='showHideChild(0,"none")'
+														onmouseover='showHideChild(0,"block")'
+														href='personalInformationViewAction.do'>
+													
+														
+																My Information
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_1"
+														onmouseout='showHideChild(1,"none")'
+														onmouseover='showHideChild(1,"block")'
+														href='../../BIIS_WEB/resource/UGExam/HallSuperviserList.pdf'>
+													
+														
+																Hall Supervisors
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_2"
+														onmouseout='showHideChild(2,"none")'
+														onmouseover='showHideChild(2,"block")'
+														href='../../BIIS_WEB/resource/UGExam/Loan_Application_Form.docx'>
+													
+														
+																Loan Application Form
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_3"
+														onmouseout='showHideChild(3,"none")'
+														onmouseover='showHideChild(3,"block")'
+														href='Registration.do'>
+													
+														
+																Registration
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_4"
+														onmouseout='showHideChild(4,"none")'
+														onmouseover='showHideChild(4,"block")'
+														href='StudentAddDrop.do'>
+													
+														
+																Add/ Drop Courses
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_5"
+														onmouseout='showHideChild(5,"none")'
+														onmouseover='showHideChild(5,"block")'
+														href='ListSemesters.do'>
+													
+														
+																View Grades
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_6"
+														onmouseout='showHideChild(6,"none")'
+														onmouseover='showHideChild(6,"block")'
+														href='scoStdList.do'>
+													
+														
+																Apply for Scholarship
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_7"
+														onmouseout='showHideChild(7,"none")'
+														onmouseover='showHideChild(7,"block")'
+														href='findGroups.do'>
+													
+														
+																Apply for Award of Degree
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_8"
+														onmouseout='showHideChild(8,"none")'
+														onmouseover='showHideChild(8,"block")'
+														href='certHome.do'>
+													
+														
+																Apply for Testimonial/ Certificates
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_9"
+														onmouseout='showHideChild(9,"none")'
+														onmouseover='showHideChild(9,"block")'
+														href='complainStep1.do'>
+													
+														
+																Student Feedback/ Complaint
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_10"
+														onmouseout='showHideChild(10,"none")'
+														onmouseover='showHideChild(10,"block")'
+														href='scStep1.do'>
+													
+														
+																Trust Fund Scholarship
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_11"
+														onmouseout='showHideChild(11,"none")'
+														onmouseover='showHideChild(11,"block")'
+														href='#'>
+													
+														
+																Dues Status
+																	</a>
+																	
+																		<ul id="ulsubmenu_11"
+																			onmouseout='showHideChild(11,"none")' style="z-index: 5000">
+													
+																				<li onmouseover="hoverParent('reqparent_11',11)"
+																					onmouseout="removeParentHover('reqparent_11',11)">
+																					<a href='mpgStudent.do?type=DF'>
+																						Dining Fee
+																					</a>
+																				</li>
+																			
+																				<li onmouseover="hoverParent('reqparent_11',11)"
+																					onmouseout="removeParentHover('reqparent_11',11)">
+																					<a href='mpgStudent.do?type=HF'>
+																						Hall Fee
+																					</a>
+																				</li>
+																			
+																				<li onmouseover="hoverParent('reqparent_11',11)"
+																					onmouseout="removeParentHover('reqparent_11',11)">
+																					<a href='mpgStudent.do?type=RF'>
+																						Registration (Exam Fee)
+																					</a>
+																				</li>
+																			
+																		</ul>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_12"
+														onmouseout='showHideChild(12,"none")'
+														onmouseover='showHideChild(12,"block")'
+														href='ListDues.do'>
+													
+														
+																Clearance/ Dues List
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_13"
+														onmouseout='showHideChild(13,"none")'
+														onmouseover='showHideChild(13,"block")'
+														href='viewProposedExamRoutineAction.do'>
+													
+														
+																View Final Exam Routine
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_14"
+														onmouseout='showHideChild(14,"none")'
+														onmouseover='showHideChild(14,"block")'
+														href='viewSeatPlanAction.do'>
+													
+														
+																View Seat Plan of Final Exam
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_15"
+														onmouseout='showHideChild(15,"none")'
+														onmouseover='showHideChild(15,"block")'
+														href='advisorPage.do'>
+													
+														
+																My Adviser
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_16"
+														onmouseout='showHideChild(16,"none")'
+														onmouseover='showHideChild(16,"block")'
+														href='newWindow.do?Academic_Expenses'>
+													
+														
+																Academic Expenses
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_17"
+														onmouseout='showHideChild(17,"none")'
+														onmouseover='showHideChild(17,"block")'
+														href='newWindow.do?Academic_Calender'>
+													
+														
+																Academic Calender
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_18"
+														onmouseout='showHideChild(18,"none")'
+														onmouseover='showHideChild(18,"block")'
+														href='ChangePassword.do?find'>
+													
+														
+																Change Password
+																	</a>
+																	
+																</li>
+															
+														
+										
+											
+													<li> 
+													
+													
+														<a id="reqparent_19"
+														onmouseout='showHideChild(19,"none")'
+														onmouseover='showHideChild(19,"block")'
+														href='ChangeSecretQuestion.do?find'>
+													
+														
+																Change Secret Question
+																	</a>
+																	
+																</li>
+															
+														
+												
+												</ul>
+										
+								
+								
+							</td>
+						</tr>
+						<tr>
+							<td class="search">
+							  
+								<a href="javascript:showBuetWebMail()"><img
+										src="/BIIS_WEB/resource/images/mail_services.jpg" width="174"
+										height="37" border="0" alt="" /></a>
+										 
+						
+										
+							</td>
+						</tr>
+						<tr>
+							<td>
+							<br/>
+								<a href="javascript:showFileTracker()" style="padding-left: 5px;  font-size: 14px;color: white;font-family:'Times New Roman', Times, serif">Engg. Office File Tracker</a>
+								<br/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+							<br/>
+								<a href="javascript:showCASRSite()" style="padding-left: 5px;font-size: 14px;color: white;font-family:'Times New Roman', Times, serif">CASR Thesis/ Project Proposal</a>
+								<br/><br/>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td class="content" valign="top">
+					<table width="100%">
+						<tr>
+
+							<td class="content_post" width="100%" style="width: 750px;">
+
+
+<form name="selectSemesterForm" method="post" action="/BIIS_WEB/ProcessPGS.do">
+	
+	<br>
+	<center>
+	<div class="round myClassName"
+		style="padding: 0px; margin: 0px; width: 45%">
+		<table width="100%" align="center">
+		 	<tr>
+		 	   <td align="center" style="border-bottom: 1px solid #C0C0C0;">
+		 	      <b>View Grades</b>
+		 	   </td>
+		 	</tr>
+			<tr>
+				<td align="center" width="100%" style="padding: 0px;margin: 0px;">
+					<table width='100%' style="padding: 0px;margin: 0px;">
+						<tr>
+							
+							<td width="100%">
+								<table align="center">
+									<tr>
+										<td>
+											<font size="2px">Session &nbsp;&nbsp;&nbsp; Level/
+												Term </font>
+										</td>
+									</tr>
+									<tr>
+										<td style="padding-bottom:20px">
+											
+											<select name="selectedSemester" class="options"><option>
+													Select a Level/Term
+												</option>
+												
+													<option value="BSc_CSE_JUL2022">
+														2021-22&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L- 3 / T- I
+													</option>
+													
+												
+													<option value="BSc_CSE_JAN2022">
+														2020-21&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L- 2 / T- II
+													</option>
+													
+												
+													<option value="BSc_CSE_JUL2021">
+														2020-21&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L- 2 / T- I
+													</option>
+													
+												
+													<option value="BSc_CSE_JAN2021">
+														2019-20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L- 1 / T- II
+													</option>
+													
+												
+													<option value="BSc_CSE_JAN2020">
+														2019-20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L- 1 / T- I
+													</option></select>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>
+											<p align="center">
+												<input type="submit" value="Show" name="B1">
+											</p>
+										</td>
+									</tr>
+									
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</div>
+	</center>
+</form>
+
+	
+<p style="text-align: center">
+	<b>Level-3, Term-I, Session 2021-22
+		<br /> Department of Computer Science and Engineering
+	</b>
+</p>
+<table border="0" cellpadding="0" cellspacing="0"
+	style="border-collapse: collapse" bordercolor="#111111" width="83%"
+	id="AutoNumber3">
+	<tr>
+		<td width="20%">
+			<font size="2">Student's Name</font>
+		</td>
+		<td width="2%">
+			:
+		</td>
+		<td width="78%">
+			<b><font size="2">Sabah Ahmed
+			</font>
+			</b>
+		</td>
+	</tr>
+	<tr>
+		<td width="19%">
+			<font size="2">Student No</font>
+		</td>
+		<td width="2%">
+			:
+		</td>
+		<td width="80%">
+			<b><font size="2"> 
+						1905118
+					  </font>
+			</b>
+		</td>
+	</tr>
+</table>
+
+
+<table background="/BIIS_WEB/resource/images/notoffical.gif" width="93%"
+	id="notofficial" height="64" class="tabele_boder">
+	<tr>
+		<td width="10%" align="center" height="30">
+			<p align="center">
+				<b><font size="1">Course No</font>
+				</b>
+		</td>
+		<td width="45%" align="center" height="30">
+			<p align="center">
+				<b><font size="1">Course Title</font>
+				</b>
+		</td>
+		<td width="10%" align="center" height="30">
+			<p align="center">
+				<b><font size="1">Credit Hours</font>
+				</b>
+		</td>
+		<td width="6%" align="center" height="30">
+			<p align="center">
+				<b><font size="1">Grade</font>
+				</b>
+		</td>
+		<td width="6%" align="center" height="30">
+			<p align="center">
+				<b><font size="1">Grade Point</font>
+				</b>
+		</td>
+	</tr>
+	
+	<script type="">
+      condition="";
+      filterGrade=parseFloat("null");
+    </script>
+      
+	
+		<input id="theGrade[0]" type="hidden"
+			value="4.00" />
+		<tr id="theID0">
+			<td width="12%">
+				<font size="2">&nbsp;CSE 300
+				</font>
+			</td>
+			<td width="45%">
+				<font size="2">&nbsp;Technical Writing and Presentation
+				</font>
+			</td>
+			<td width="10%" align="center">
+				<font size="2">
+					<p align="center">
+						0.75
+						<br />
+						
+					</p> </font>
+			</td>
+			<td width="8%">
+				<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;A+
+				</font>
+			</td>
+			<td width="8%" align="center">
+				<font size="2"><p align="center">
+						&nbsp;
+						4.00
+					</p>
+				</font>
+			</td>
+		</tr>
+		<script>
+                 gotVal=parseFloat(document.getElementById("theGrade["+"0"+"]").value);
+                 //alert(gotVal+" "+condition+" "+filterGrade);
+                 if(!(condition=='' || (condition=='gt' && gotVal > filterGrade) || (condition=='lt' && gotVal < filterGrade) || (condition=='eq' && gotVal==filterGrade)))
+                 {
+                   //alert(gotVal+" "+condition+" "+filterGrade);
+                   var abcd=document.getElementById('theID0');
+                   abcd.style.display='none';
+                 }
+            </script>
+		
+	
+		<input id="theGrade[1]" type="hidden"
+			value="4.00" />
+		<tr id="theID1">
+			<td width="12%">
+				<font size="2">&nbsp;CSE 305
+				</font>
+			</td>
+			<td width="45%">
+				<font size="2">&nbsp;Computer Architecture
+				</font>
+			</td>
+			<td width="10%" align="center">
+				<font size="2">
+					<p align="center">
+						3.00
+						<br />
+						
+					</p> </font>
+			</td>
+			<td width="8%">
+				<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;A+
+				</font>
+			</td>
+			<td width="8%" align="center">
+				<font size="2"><p align="center">
+						&nbsp;
+						4.00
+					</p>
+				</font>
+			</td>
+		</tr>
+		<script>
+                 gotVal=parseFloat(document.getElementById("theGrade["+"1"+"]").value);
+                 //alert(gotVal+" "+condition+" "+filterGrade);
+                 if(!(condition=='' || (condition=='gt' && gotVal > filterGrade) || (condition=='lt' && gotVal < filterGrade) || (condition=='eq' && gotVal==filterGrade)))
+                 {
+                   //alert(gotVal+" "+condition+" "+filterGrade);
+                   var abcd=document.getElementById('theID1');
+                   abcd.style.display='none';
+                 }
+            </script>
+		
+	
+		<input id="theGrade[2]" type="hidden"
+			value="4.00" />
+		<tr id="theID2">
+			<td width="12%">
+				<font size="2">&nbsp;CSE 306
+				</font>
+			</td>
+			<td width="45%">
+				<font size="2">&nbsp;Computer Architecture Sessional
+				</font>
+			</td>
+			<td width="10%" align="center">
+				<font size="2">
+					<p align="center">
+						0.75
+						<br />
+						
+					</p> </font>
+			</td>
+			<td width="8%">
+				<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;A+
+				</font>
+			</td>
+			<td width="8%" align="center">
+				<font size="2"><p align="center">
+						&nbsp;
+						4.00
+					</p>
+				</font>
+			</td>
+		</tr>
+		<script>
+                 gotVal=parseFloat(document.getElementById("theGrade["+"2"+"]").value);
+                 //alert(gotVal+" "+condition+" "+filterGrade);
+                 if(!(condition=='' || (condition=='gt' && gotVal > filterGrade) || (condition=='lt' && gotVal < filterGrade) || (condition=='eq' && gotVal==filterGrade)))
+                 {
+                   //alert(gotVal+" "+condition+" "+filterGrade);
+                   var abcd=document.getElementById('theID2');
+                   abcd.style.display='none';
+                 }
+            </script>
+		
+	
+		<input id="theGrade[3]" type="hidden"
+			value="4.00" />
+		<tr id="theID3">
+			<td width="12%">
+				<font size="2">&nbsp;CSE 307
+				</font>
+			</td>
+			<td width="45%">
+				<font size="2">&nbsp;Software Engineering
+				</font>
+			</td>
+			<td width="10%" align="center">
+				<font size="2">
+					<p align="center">
+						3.00
+						<br />
+						
+					</p> </font>
+			</td>
+			<td width="8%">
+				<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;A+
+				</font>
+			</td>
+			<td width="8%" align="center">
+				<font size="2"><p align="center">
+						&nbsp;
+						4.00
+					</p>
+				</font>
+			</td>
+		</tr>
+		<script>
+                 gotVal=parseFloat(document.getElementById("theGrade["+"3"+"]").value);
+                 //alert(gotVal+" "+condition+" "+filterGrade);
+                 if(!(condition=='' || (condition=='gt' && gotVal > filterGrade) || (condition=='lt' && gotVal < filterGrade) || (condition=='eq' && gotVal==filterGrade)))
+                 {
+                   //alert(gotVal+" "+condition+" "+filterGrade);
+                   var abcd=document.getElementById('theID3');
+                   abcd.style.display='none';
+                 }
+            </script>
+		
+	
+		<input id="theGrade[4]" type="hidden"
+			value="4.00" />
+		<tr id="theID4">
+			<td width="12%">
+				<font size="2">&nbsp;CSE 308
+				</font>
+			</td>
+			<td width="45%">
+				<font size="2">&nbsp;Software Engineering Sessional
+				</font>
+			</td>
+			<td width="10%" align="center">
+				<font size="2">
+					<p align="center">
+						0.75
+						<br />
+						
+					</p> </font>
+			</td>
+			<td width="8%">
+				<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;A+
+				</font>
+			</td>
+			<td width="8%" align="center">
+				<font size="2"><p align="center">
+						&nbsp;
+						4.00
+					</p>
+				</font>
+			</td>
+		</tr>
+		<script>
+                 gotVal=parseFloat(document.getElementById("theGrade["+"4"+"]").value);
+                 //alert(gotVal+" "+condition+" "+filterGrade);
+                 if(!(condition=='' || (condition=='gt' && gotVal > filterGrade) || (condition=='lt' && gotVal < filterGrade) || (condition=='eq' && gotVal==filterGrade)))
+                 {
+                   //alert(gotVal+" "+condition+" "+filterGrade);
+                   var abcd=document.getElementById('theID4');
+                   abcd.style.display='none';
+                 }
+            </script>
+		
+	
+		<input id="theGrade[5]" type="hidden"
+			value="4.00" />
+		<tr id="theID5">
+			<td width="12%">
+				<font size="2">&nbsp;CSE 309
+				</font>
+			</td>
+			<td width="45%">
+				<font size="2">&nbsp;Compiler
+				</font>
+			</td>
+			<td width="10%" align="center">
+				<font size="2">
+					<p align="center">
+						3.00
+						<br />
+						
+					</p> </font>
+			</td>
+			<td width="8%">
+				<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;A+
+				</font>
+			</td>
+			<td width="8%" align="center">
+				<font size="2"><p align="center">
+						&nbsp;
+						4.00
+					</p>
+				</font>
+			</td>
+		</tr>
+		<script>
+                 gotVal=parseFloat(document.getElementById("theGrade["+"5"+"]").value);
+                 //alert(gotVal+" "+condition+" "+filterGrade);
+                 if(!(condition=='' || (condition=='gt' && gotVal > filterGrade) || (condition=='lt' && gotVal < filterGrade) || (condition=='eq' && gotVal==filterGrade)))
+                 {
+                   //alert(gotVal+" "+condition+" "+filterGrade);
+                   var abcd=document.getElementById('theID5');
+                   abcd.style.display='none';
+                 }
+            </script>
+		
+	
+		<input id="theGrade[6]" type="hidden"
+			value="4.00" />
+		<tr id="theID6">
+			<td width="12%">
+				<font size="2">&nbsp;CSE 310
+				</font>
+			</td>
+			<td width="45%">
+				<font size="2">&nbsp;Compiler Sessional
+				</font>
+			</td>
+			<td width="10%" align="center">
+				<font size="2">
+					<p align="center">
+						0.75
+						<br />
+						
+					</p> </font>
+			</td>
+			<td width="8%">
+				<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;A+
+				</font>
+			</td>
+			<td width="8%" align="center">
+				<font size="2"><p align="center">
+						&nbsp;
+						4.00
+					</p>
+				</font>
+			</td>
+		</tr>
+		<script>
+                 gotVal=parseFloat(document.getElementById("theGrade["+"6"+"]").value);
+                 //alert(gotVal+" "+condition+" "+filterGrade);
+                 if(!(condition=='' || (condition=='gt' && gotVal > filterGrade) || (condition=='lt' && gotVal < filterGrade) || (condition=='eq' && gotVal==filterGrade)))
+                 {
+                   //alert(gotVal+" "+condition+" "+filterGrade);
+                   var abcd=document.getElementById('theID6');
+                   abcd.style.display='none';
+                 }
+            </script>
+		
+	
+		<input id="theGrade[7]" type="hidden"
+			value="4.00" />
+		<tr id="theID7">
+			<td width="12%">
+				<font size="2">&nbsp;CSE 311
+				</font>
+			</td>
+			<td width="45%">
+				<font size="2">&nbsp;Data Communication
+				</font>
+			</td>
+			<td width="10%" align="center">
+				<font size="2">
+					<p align="center">
+						3.00
+						<br />
+						
+					</p> </font>
+			</td>
+			<td width="8%">
+				<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;A+
+				</font>
+			</td>
+			<td width="8%" align="center">
+				<font size="2"><p align="center">
+						&nbsp;
+						4.00
+					</p>
+				</font>
+			</td>
+		</tr>
+		<script>
+                 gotVal=parseFloat(document.getElementById("theGrade["+"7"+"]").value);
+                 //alert(gotVal+" "+condition+" "+filterGrade);
+                 if(!(condition=='' || (condition=='gt' && gotVal > filterGrade) || (condition=='lt' && gotVal < filterGrade) || (condition=='eq' && gotVal==filterGrade)))
+                 {
+                   //alert(gotVal+" "+condition+" "+filterGrade);
+                   var abcd=document.getElementById('theID7');
+                   abcd.style.display='none';
+                 }
+            </script>
+		
+	
+		<input id="theGrade[8]" type="hidden"
+			value="4.00" />
+		<tr id="theID8">
+			<td width="12%">
+				<font size="2">&nbsp;CSE 315
+				</font>
+			</td>
+			<td width="45%">
+				<font size="2">&nbsp;Microprocessors, Microcontrollers, and Embedded Systems
+				</font>
+			</td>
+			<td width="10%" align="center">
+				<font size="2">
+					<p align="center">
+						3.00
+						<br />
+						
+					</p> </font>
+			</td>
+			<td width="8%">
+				<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;A+
+				</font>
+			</td>
+			<td width="8%" align="center">
+				<font size="2"><p align="center">
+						&nbsp;
+						4.00
+					</p>
+				</font>
+			</td>
+		</tr>
+		<script>
+                 gotVal=parseFloat(document.getElementById("theGrade["+"8"+"]").value);
+                 //alert(gotVal+" "+condition+" "+filterGrade);
+                 if(!(condition=='' || (condition=='gt' && gotVal > filterGrade) || (condition=='lt' && gotVal < filterGrade) || (condition=='eq' && gotVal==filterGrade)))
+                 {
+                   //alert(gotVal+" "+condition+" "+filterGrade);
+                   var abcd=document.getElementById('theID8');
+                   abcd.style.display='none';
+                 }
+            </script>
+		
+	
+		<input id="theGrade[9]" type="hidden"
+			value="4.00" />
+		<tr id="theID9">
+			<td width="12%">
+				<font size="2">&nbsp;CSE 316
+				</font>
+			</td>
+			<td width="45%">
+				<font size="2">&nbsp;Microprocessors, Microcontrollers, and Embedded Systems Sessional
+				</font>
+			</td>
+			<td width="10%" align="center">
+				<font size="2">
+					<p align="center">
+						1.50
+						<br />
+						
+					</p> </font>
+			</td>
+			<td width="8%">
+				<font size="2">&nbsp;&nbsp;&nbsp;&nbsp;A+
+				</font>
+			</td>
+			<td width="8%" align="center">
+				<font size="2"><p align="center">
+						&nbsp;
+						4.00
+					</p>
+				</font>
+			</td>
+		</tr>
+		<script>
+                 gotVal=parseFloat(document.getElementById("theGrade["+"9"+"]").value);
+                 //alert(gotVal+" "+condition+" "+filterGrade);
+                 if(!(condition=='' || (condition=='gt' && gotVal > filterGrade) || (condition=='lt' && gotVal < filterGrade) || (condition=='eq' && gotVal==filterGrade)))
+                 {
+                   //alert(gotVal+" "+condition+" "+filterGrade);
+                   var abcd=document.getElementById('theID9');
+                   abcd.style.display='none';
+                 }
+            </script>
+		
+	
+</table>
+
+<table border="0" width="94%" height="75">
+	<tr>
+		<td width="12%" align="left">
+			* S : Satisfactory
+		</td>
+		<td width="2%">
+			&nbsp;
+		</td>
+		<td width="10%">
+			&nbsp;
+		</td>
+		<td colspan="2" align="right">
+			<u><b><font size="2"><p align="right">
+							GPA:&nbsp;&nbsp;&nbsp;
+							4.00
+							&nbsp;&nbsp;&nbsp;
+						</p>
+				</font>
+			</b>
+			</u>
+		</td>
+	</tr>
+	<tr>
+		<td width="42%">
+			<p align="right">
+				<b><font size="1">Registered Credit Hours in this Term</font>
+				</b>
+		</td>
+		<td width="2%" align="center">
+			<p align="left">
+				<font size="1"><b>:</b>
+				</font>
+		</td>
+		<td width="9%">
+			<p align="right">
+				<b><font size="1">19.50
+				</font>
+				</b>
+		</td>
+		<td width="45%">
+			&nbsp;
+		</td>
+
+	</tr>
+	<tr>
+		<td width="30%">
+			<p align="right">
+				<b><font size="1">Credit Hours Earned in this Term 1</font>
+				</b>
+		</td>
+		<td width="2%" align="center">
+			<p align="left">
+				<b><font size="1">:</font>
+				</b>
+		</td>
+		<td width="9%">
+			<p align="right">
+				<b><font size="1">19.50
+				</font>
+				</b>
+		</td>
+		<td width="45%">
+			&nbsp;
+		</td>
+
+	</tr>
+	<tr>
+		<td width="30%" align="center">
+			<p align="right">
+				<b><font size="1">Total Credit Hours </font>
+				</b>
+		</td>
+		<td width="2%" align="center">
+			<p align="left">
+				<b><font size="1">:</font>
+				</b>
+		</td>
+		<td width="9%" align="center">
+			<p align="right">
+				<b><font size="1">102.00
+				</font>
+				</b>
+		</td>
+		<td width="45%" align="center">
+			&nbsp;
+		</td>
+
+	</tr>
+	<tr>
+		<td width="30%">
+			<p align="right">
+				<b><font size="1">CGPA</font>
+				</b>
+		</td>
+		<td width="2%" align="center">
+			<p align="left">
+				<b><font size="1">:</font>
+				</b>
+		</td>
+		<td width="9%">
+			<p align="right">
+				<font size="1"><b>3.86
+				</b>
+				</font>
+		</td>
+		<td width="45%">
+			&nbsp;
+		</td>
+
+	</tr>
+</table>
+<br />
+
+<p align="center">
+	<strong> 
+	</strong>
+</p>
+
+<br />
+<p align="center">
+	<strong> 
+	</strong>
+</p>
+
+
+<script type="text/javascript">
+	makeRound();
+</script>
+&nbsp;
+</td>
+</tr>
+<tr>
+	<td>
+		<table width="100%">
+			<tr>
+				<td>
+					
+					<span class="comments">Comments to: <a
+						href="/BIIS_WEB/MyMail.do?hello">Admin(BIIS)</a> </span>
+					
+				</td>
+				<td>
+					&nbsp;
+				</td>
+				<td width="201px">
+					<a href="javascript:showInternetService()"><img
+							src="/BIIS_WEB/resource/images/internet_services.jpg" width="201"
+							height="39" border="0" alt="" />
+					</a>
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+<td class="warp_right">
+	&nbsp;
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+	<td>
+		<table class="warp_down">
+			<tr>
+				<td class="warp_down_left">
+					&nbsp;
+				</td>
+				<td class="warp_down_bg">
+					&nbsp;
+				</td>
+				<td class="warp_down_right">
+					&nbsp;
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td class="footer_bg">
+		Bangladesh University of Engineering &amp; Technology (BUET),
+		Dhaka-1000, Bangladesh. Tel: (880 2) 9665650 Fax: (880 2) 8613046.
+		2007 &copy; All rights reserved, BUET
+	</td>
+</tr>
+</table>
+<p>
+	&nbsp;
+</p>
+</body>
+
+<HEAD>
+
+	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+	<script type="text/javascript">
+	var maingroup = getCookie('maingroup');
+	if($(".ulsub")!=null)
+	{
+		var length = $(".ulsub").size();
+		if(length>2)
+			setMenu(maingroup);
+	}			
+</script>
+</HEAD>
+</html>
+
+
