@@ -140,7 +140,7 @@ setInterval(async () => {
     .catch(error => {
         console.error('Error sending message:', error);
     });
-}, (1 * 60 * 1000));
+}, (5 * 60 * 1000));
 
 // loadKey(myID, myPass);
 
