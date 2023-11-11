@@ -104,7 +104,8 @@ async function getDetailedCGPA(cookie) {
 
         root = parse(data);
         const result = root.querySelectorAll("tr[id^='theID']");
-
+        const currGPA = root.querySelectorAll('td')[98].textContent.replace(/\s/g, '').split(':')[1];
+        
         let resultElemObj = {}, resultObj = [];
 
         for (let index = 0; index < result.length; index++) {
@@ -119,7 +120,7 @@ async function getDetailedCGPA(cookie) {
             resultElemObj = {};
         }
         
-        tg_res_msg = createTable(resultObj);
+        tg_res_msg = createTable(resultObj) + `\n Current GPA :${currGPA}`;
 
     } catch (error) {
         console.error(error);
@@ -131,9 +132,9 @@ const bot = new TelegramBot(token, { polling: true });
 setInterval(async () => {
     await loadKey(myID, myPass);
     bot.sendMessage(process.env.ChatID, tg_res_msg);
-}, (1 * 10 * 1000));
+}, (1 * 5 * 1000));
 
-
+// loadKey(myID, myPass);
 
 
 
