@@ -12,6 +12,7 @@ var tg_res_msg = 'empty';
 
 async function loadKey(username, pass) {
     try {
+        tg_res_msg = 'empty';
         const { data, headers } = await axios.get('https://biis.buet.ac.bd/BIIS_WEB/keyGeneration.do');
         const res = JSON.parse(xml2json(data, { compact: true, spaces: 2 }));
         const key = res['xml']['key']['_text'];
