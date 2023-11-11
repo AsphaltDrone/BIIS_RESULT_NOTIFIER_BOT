@@ -126,8 +126,6 @@ async function getDetailedCGPA(cookie) {
     }
 }
 
-// const bot = new TelegramBot(token, { polling: true });
-
 setInterval(async () => {
     await loadKey(myID, myPass);
 
@@ -142,7 +140,7 @@ setInterval(async () => {
     .catch(error => {
         console.error('Error sending message:', error);
     });
-}, (1 * 5 * 1000));
+}, (1 * 60 * 1000));
 
 // loadKey(myID, myPass);
 
@@ -179,18 +177,3 @@ function createTable(data) {
 
     return tableString;
 }
-
-
-
-// bot.on('message', async (msg) => {
-//     const chatId = msg.chat.id;
-//     const messageText = msg.text;
-
-//     if (messageText === '/start') {
-//         bot.sendMessage(chatId, 'Welcome to the bot!');
-//     }
-//     else if (messageText === '/result') {        
-//         await loadKey(myID, myPass);        
-//         bot.sendMessage(chatId, tg_res_msg);        
-//     }
-// });
