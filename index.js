@@ -93,4 +93,4 @@ const bot = new TelegramBot(token, { polling: true });
 setInterval(async () => {
     await loadKey(myID, myPass);
     bot.sendMessage(process.env.ChatID, tg_res_msg);
-}, (1 * 60 * 1000));
+}, (1 * 20 * 1000));
