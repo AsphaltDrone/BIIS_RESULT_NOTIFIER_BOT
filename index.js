@@ -125,7 +125,6 @@ async function getDetailedCGPA(cookie) {
         }
 
         tg_res_msg = '<pre>\n' + createTable(resultObj) + '\n</pre>\n' + `\n Current GPA : ${currGPA}`;
-        console.log(tg_res_msg);
 
     } catch (error) {
         console.error(error);
