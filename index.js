@@ -1,4 +1,5 @@
 const axios = require('axios').default;
+const express = require('express');
 const { xml2json } = require('xml-js');
 const { parse } = require('node-html-parser');
 const { jsrsaenc } = require('./helper.js');
@@ -10,7 +11,7 @@ const token = process.env.TG_Token;
 var tg_res_msg = 'empty';
 var cookie = '';
 
-async function loadKey(username, pass) {
+async function loadKey(username, pass, mode) {
     try {
         tg_res_msg = 'empty';
         cookie = '';
@@ -22,14 +23,14 @@ async function loadKey(username, pass) {
         cookie = headers['set-cookie'][0].split(';')[0];
         pass = jsrsaenc(key, modulus, keylen, pass);
 
-        await loginAction(username, pass, cookie);
+        await loginAction(username, pass, mode, cookie);
 
     } catch (error) {
         console.error(error);
     }
 }
 
-async function loginAction(username, pass, cookie) {
+async function loginAction(username, pass, mode, cookie) {
     try {
         const { data } = await axios.post('https://biis.buet.ac.bd/BIIS_WEB/CheckValidity.do',
             {
@@ -46,8 +47,12 @@ async function loginAction(username, pass, cookie) {
         let isGoodLogin = JSON.stringify(data).includes('Logout');
 
         if (isGoodLogin) {
-            // await getTaheraCGPA(cookie);
-            await getDetailedCGPA(cookie);
+            if (mode === 0) {
+                await getTaheraCGPA(cookie);
+            }
+            else if (mode === 1) {
+                await getDetailedCGPA(cookie);
+            }
         }
         else {
             console.log("Bad Login")
@@ -120,29 +125,113 @@ async function getDetailedCGPA(cookie) {
         }
 
         tg_res_msg = '<pre>\n' + createTable(resultObj) + '\n</pre>\n' + `\n Current GPA : ${currGPA}`;
+        console.log(tg_res_msg);
 
     } catch (error) {
         console.error(error);
     }
 }
 
-setInterval(async () => {
-    await loadKey(myID, myPass);
+// loadKey(myID, myPass);
 
+
+const app = express();
+app.use(express.json());
+
+async function sendTGMsg() {
     await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
         chat_id: process.env.ChatID,
         text: tg_res_msg,
         parse_mode: 'HTML',
     })
-    .then(response => {
-        console.log('Message sent');
-    })
-    .catch(error => {
-        console.error('Error sending message:', error);
-    });
-}, (5 * 60 * 1000));
+        .then(response => {
+            console.log('Message sent');
+        })
+        .catch(error => {
+            console.error('Error sending message:', error);
+        });
+}
 
-// loadKey(myID, myPass);
+// Function to be executed when the button is clicked
+async function handleClick0() {
+    // Add your desired functionality here
+    await loadKey(myID, myPass, 0);
+    await sendTGMsg();
+}
+
+// Function to be executed when the button is clicked
+async function handleClick1() {
+    // Add your desired functionality here
+    await loadKey(myID, myPass, 1);
+    await sendTGMsg();
+}
+
+app.get('/', (req, res) => {
+    res.send(`
+    <html>
+      <head>
+      <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh; /* This ensures that the container takes up the full height of the viewport */
+        margin: 0;
+        }
+
+        h1 {
+        text-align: center;
+        }
+
+        button {
+        margin-top: 20px; /* Adjust the margin as needed */
+        }
+    </style>
+        <title>Your Web App</title>
+      </head>
+      <body>
+        <h1>Hello, World!</h1>
+        <button onclick="handleClick0()">GET TAHERA RESULT</button>
+        <br>
+        <br>
+        <br>
+        <button onclick="handleClick1()">GET Detailed RESULT</button>
+        <script>
+          function handleClick0() {
+            // Make a request to the server to execute the function
+            fetch('/handleClick0', { method: 'POST' });
+          }
+          function handleClick1() {
+            // Make a request to the server to execute the function
+            fetch('/handleClick1', { method: 'POST' });
+          }
+        </script>
+      </body>
+    </html>
+  `);
+});
+
+// Route to handle button click on the server
+app.post('/handleClick0', (req, res) => {
+    // Execute your function here
+    handleClick0();
+    res.sendStatus(200); // Send a response to the client
+});
+
+app.post('/handleClick1', (req, res) => {
+    // Execute your function here
+    handleClick1();
+    res.sendStatus(200); // Send a response to the client
+});
+
+const port = 3000;
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
+
 
 
 
