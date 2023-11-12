@@ -108,7 +108,12 @@ async function getDetailedCGPA(cookie) {
 
         root = parse(data);
         const result = root.querySelectorAll("tr[id^='theID']");
-        const currGPA = root.querySelectorAll('td')[98].textContent.replace(/\s/g, '').split(':')[1];
+        
+        const currGPAElem = findElementByString('GPA');
+        let currGPA = 'empty';
+        if(currGPAElem != null) {
+            currGPA = currGPAElem.textContent.replace(/\s/g, '').split(':')[1];
+        }        
 
         let resultElemObj = {}, resultObj = [];
 
@@ -264,4 +269,16 @@ function createTable(data) {
     const tableString = `${headerRow}\n${separatorRow}\n${dataRows.join('\n')}`;
 
     return tableString;
+}
+
+function findElementByString(root, searchString) {
+    var elements = root.getElementsByTagName("*");
+
+    for (var i = 0; i < elements.length; i++) {
+        if (elements[i].textContent.includes(searchString)) {
+            return elements[i];
+        }
+    }
+
+    return null; // If no matching element is found
 }
