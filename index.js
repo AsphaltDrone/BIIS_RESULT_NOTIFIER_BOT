@@ -92,7 +92,7 @@ async function getDetailedCGPA(cookie) {
             });
 
         let root = parse(res1.data);
-        const selectedSemester = root.querySelectorAll('option')[1].rawAttributes.value;
+        const selectedSemester = root.querySelectorAll('option')[2].rawAttributes.value;
 
         const { data } = await axios.post('https://biis.buet.ac.bd/BIIS_WEB/ProcessPGS.do',
             {
