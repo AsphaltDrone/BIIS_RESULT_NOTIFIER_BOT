@@ -108,8 +108,8 @@ async function getDetailedCGPA(cookie) {
 
         root = parse(data);
         const result = root.querySelectorAll("tr[id^='theID']");
-        
-        const currGPAElem = findElementByString('GPA');
+
+        const currGPAElem = findElementByString(root, 'GPA');
         let currGPA = 'empty';
         if(currGPAElem != null) {
             currGPA = currGPAElem.textContent.replace(/\s/g, '').split(':')[1];
