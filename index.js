@@ -92,7 +92,7 @@ async function getDetailedCGPA(cookie) {
             });
 
         let root = parse(res1.data);
-        const selectedSemester = root.querySelectorAll('option')[2].rawAttributes.value;
+        const selectedSemester = root.querySelectorAll('option')[1].rawAttributes.value;
 
         const { data } = await axios.post('https://biis.buet.ac.bd/BIIS_WEB/ProcessPGS.do',
             {
@@ -109,11 +109,12 @@ async function getDetailedCGPA(cookie) {
         root = parse(data);
         const result = root.querySelectorAll("tr[id^='theID']");
 
-        const currGPAElem = findElementByString(root, 'GPA');
+        const currGPAElem = findElementByString(root, 'GPA:');
         let currGPA = 'empty';
         if(currGPAElem != null) {
             currGPA = currGPAElem.textContent.replace(/\s/g, '').split(':')[1];
-        }        
+        }    
+
 
         let resultElemObj = {}, resultObj = [];
 
@@ -272,7 +273,7 @@ function createTable(data) {
 }
 
 function findElementByString(root, searchString) {
-    var elements = root.getElementsByTagName("*");
+    var elements = root.querySelectorAll("p");
 
     for (var i = 0; i < elements.length; i++) {
         if (elements[i].textContent.includes(searchString)) {
